@@ -1,0 +1,9 @@
+[project]
+name = "hpc-deps-parser"
+version = "0.1.0"
+description = "HPC dependency expression parser (MVC + pytest)"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
