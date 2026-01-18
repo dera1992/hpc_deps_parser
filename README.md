@@ -67,6 +67,7 @@ hpc-deps-parser/
 6. Running Tests with Coverage
     ```bash
     pytest --cov=app --cov-report=term-missing
+   pytest --cov=app --cov-report=html  ## To generate an HTML coverage report
     ```
 
 ## Coverage Notes

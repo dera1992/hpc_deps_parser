@@ -14,7 +14,7 @@ def main():
         "a & b",
         "a | b | c",
         "a & (b | c)",
-        "(a & b) | (c & d)",
+        "(a & b) | (b & c)",
         "a &",          # invalid
         "a (b | c)",    # invalid
         "a && b",       # invalid
