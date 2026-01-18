@@ -104,3 +104,46 @@ Can be extended to support:
 - Job status conditions (success/failure)
 - JSON AST output
 - Scheduler integration (e.g., Slurm)
+
+## Architecture Diagram
+flowchart TB
+
+  %% ===== USER INTERFACE =====
+  U[User / Client] --> UI[CLI or REST API]
+
+  %% ===== CONTROLLER =====
+  UI --> C[Controller<br/>handle_parse_request()]
+
+  %% ===== MODEL =====
+  C --> M[DependencyExpressionModel]
+
+  subgraph Parsing Engine
+    L[Tokenizer / Lexer<br/>String → Tokens]
+    P[Recursive Descent Parser<br/>Tokens → AST]
+  end
+
+  M --> L --> P --> AST[(Nested List AST)]
+
+  %% ===== VIEW =====
+  AST --> V[View<br/>Render Success Output]
+  P -->|ParseError| V2[View<br/>Render Error Output]
+
+  V --> UI
+  V2 --> UI
+  UI --> U
+
+  %% ===== OPTIONAL FUTURE EXTENSIONS =====
+  AST --> E[Evaluator Service<br/>AST → Logical Meaning]
+  E --> S[Scheduler Adapter<br/>AST → Scheduler Syntax]
+  S --> SC[HPC Scheduler<br/>Slurm / PBS / K8s]
+
+  E --> J[Job State Store<br/>DB / Cache / API]
+
+  %% ===== STYLING =====
+  classDef core fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+  classDef ext fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+  classDef io fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+
+  class U,UI io
+  class C,M,L,P,AST,V,V2 core
+  class E,S,SC,J ext
